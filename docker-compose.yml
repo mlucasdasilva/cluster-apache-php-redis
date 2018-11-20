@@ -1,9 +1,10 @@
-version: '2'
+version: '3.3'
 services:
   web1:
+    image: mlucas/php:7.2-apache-redis
     build:
-      context: .docker/web
-      dockerfile: Dockerfile-php-5.6
+      context: buildfiles/web
+      dockerfile: Dockerfile-php-7.2
     container_name: devweb1
     ports:
       - "8080:80"
@@ -12,9 +13,7 @@ services:
     volumes:
       - ./web/html:/var/www/html
   web2:
-    build:
-      context: .docker/web
-      dockerfile: Dockerfile-php-7.0
+    image: mlucas/php:7.2-apache-redis
     container_name: devweb2
     ports:
       - "8180:80"
@@ -23,9 +22,7 @@ services:
     volumes:
       - ./web/html:/var/www/html
   web3:
-    build:
-      context: .docker/web
-      dockerfile: Dockerfile-php-7.1
+    image: mlucas/php:7.2-apache-redis
     container_name: devweb3
     ports:
       - "8280:80"
@@ -34,5 +31,11 @@ services:
     volumes:
       - ./web/html:/var/www/html
   redis:
-    build: .docker/cache
+    image: redis:4.0.11-alpine
+    #build: buildfiles/cache
     container_name: devcache1
+    volumes:
+       - ./conf/redis.conf:/usr/local/etc/redis/redis.conf
+    command: redis-server /usr/local/etc/redis/redis.conf
+
+
